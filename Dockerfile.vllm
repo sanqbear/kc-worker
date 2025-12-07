@@ -1,4 +1,4 @@
-FROM nvidia/cuda:12.1.0-cudnn8-devel-ubuntu22.04
+FROM nvidia/cuda:12.4.0-cudnn-devel-ubuntu22.04
 
 LABEL maintainer="Knowledge Center Team"
 LABEL description="vLLM OpenAI-compatible API server"
@@ -26,8 +26,8 @@ RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel
 
 WORKDIR /app
 
-# Install vLLM with CUDA support
-RUN pip install --no-cache-dir vllm==0.6.3
+# Install vLLM with CUDA support (0.12.0+ supports RTX 50 series / Blackwell SM120)
+RUN pip install --no-cache-dir vllm==0.12.0
 
 # Create models directory
 RUN mkdir -p /models
