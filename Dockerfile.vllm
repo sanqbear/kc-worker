@@ -7,13 +7,12 @@ LABEL description="vLLM OpenAI-compatible API server"
 ENV DEBIAN_FRONTEND=noninteractive
 ENV PYTHONUNBUFFERED=1
 ENV CUDA_HOME=/usr/local/cuda
-
-# [중요 변경] Ubuntu 24.04에서는 pip를 통한 시스템 패키지 설치가 막혀있으므로 강제 허용
+# 시스템 패키지 강제 덮어쓰기 허용 (Ubuntu 24.04 필수)
 ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 # Install system dependencies
-# python3.11 -> python3 (Ubuntu 24.04 Default is 3.12)로 변경
-# source build를 위해 필요한 라이브러리 추가 (libgl1 등은 vllm 의존성)
+# python3-wheel, python3-setuptools 등은 apt로 설치되지만
+# 나중에 pip로 최신 버전을 덮어씌울 것입니다.
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-dev \
@@ -24,28 +23,29 @@ RUN apt-get update && apt-get install -y \
     vim \
     && rm -rf /var/lib/apt/lists/*
 
-# Set python3 as default (Ubuntu 24.04는 이미 3.12가 python3로 잡혀있지만 확실히 하기 위해)
+# Set python3 as default
 RUN ln -sf /usr/bin/python3 /usr/bin/python
-
-# Upgrade pip
-RUN python3 -m pip install --no-cache-dir --upgrade pip setuptools wheel packaging ninja
 
 WORKDIR /app
 
 # -----------------------------------------------------------------------------
+# [수정된 부분] pip 업그레이드 단계
+# --ignore-installed: apt로 설치된 구버전 패키지를 삭제하려다 나는 에러를 방지합니다.
+# -----------------------------------------------------------------------------
+RUN python3 -m pip install --no-cache-dir --upgrade --ignore-installed \
+    pip \
+    setuptools \
+    wheel \
+    packaging \
+    ninja
+
+# -----------------------------------------------------------------------------
 # [RTX 5090 / sm_120 대응 설치 구간]
-# vLLM 0.12.0이 PyPI에 있다면 pip install을 사용하고,
-# 만약 아키텍처 호환성 문제 발생 시 아래 주석 처리된 '소스 빌드' 방식을 사용하세요.
 # -----------------------------------------------------------------------------
 
-# Case A: PIP 설치 (배포판이 5090을 지원한다고 가정 시)
+# vLLM 설치
+# (참고: 만약 pip install 실패 시, 앞서 설명드린 소스 빌드 방식을 주석 해제하여 사용하세요)
 RUN pip install --no-cache-dir vllm==0.12.0
-
-# Case B: 소스 빌드 (PIP 버전이 5090을 지원하지 않거나 에러 발생 시 권장)
-# RUN git clone https://github.com/vllm-project/vllm.git && \
-#     cd vllm && \
-#     export TORCH_CUDA_ARCH_LIST="12.0" && \
-#     pip install -e .
 
 # Create models directory
 RUN mkdir -p /models
