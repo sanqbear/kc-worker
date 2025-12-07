@@ -2,7 +2,7 @@
 
 ## Overview
 
-A production-grade Celery application for asynchronous AI task processing has been implemented in `F:\sources\repos\knowledgecenter\worker\celery_app\`. This implementation follows enterprise-level reliability patterns and best practices for background processing systems.
+A production-grade Celery application for asynchronous AI task processing has been implemented in `\celery_app\`. This implementation follows enterprise-level reliability patterns and best practices for background processing systems.
 
 ## Architecture
 

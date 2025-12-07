@@ -14,7 +14,7 @@ Fast setup guide for the Knowledge Center AI Worker service.
 
 **Windows**:
 ```bash
-cd F:\sources\repos\knowledgecenter\worker
+cd 
 python -m venv venv
 venv\Scripts\activate.bat
 ```

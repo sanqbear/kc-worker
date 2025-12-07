@@ -5,20 +5,20 @@ All Docker infrastructure files for the Knowledge Center AI Worker have been suc
 ## Files Created
 
 ### Docker Compose Configurations
-1. **F:\sources\repos\knowledgecenter\worker\docker-compose.yml**
+1. **\docker-compose.yml**
    - Base configuration with Redis 7 Alpine
    - Port 6379 exposed
    - Persistent volume for data
    - Health check configured
 
-2. **F:\sources\repos\knowledgecenter\worker\docker-compose.llamacpp.yml**
+2. **\docker-compose.llamacpp.yml**
    - llama.cpp server override
    - OpenAI-compatible API on port 8000
    - Mounts ./models/gguf directory
    - Configurable context size and GPU layers
    - Health check endpoint
 
-3. **F:\sources\repos\knowledgecenter\worker\docker-compose.vllm.yml**
+3. **\docker-compose.vllm.yml**
    - vLLM server override
    - OpenAI-compatible API on port 8000
    - Mounts ./models/hf directory
@@ -27,14 +27,14 @@ All Docker infrastructure files for the Knowledge Center AI Worker have been suc
    - Health check endpoint
 
 ### Docker Images
-4. **F:\sources\repos\knowledgecenter\worker\Dockerfile.llamacpp**
+4. **\Dockerfile.llamacpp**
    - Python 3.11 slim base
    - llama-cpp-python[server] 0.2.90
    - CPU-optimized (OpenBLAS)
    - Includes curl for health checks
    - Configurable via environment variables
 
-5. **F:\sources\repos\knowledgecenter\worker\Dockerfile.vllm**
+5. **\Dockerfile.vllm**
    - NVIDIA CUDA 12.1 with cuDNN 8
    - Python 3.11
    - vLLM 0.6.3
@@ -43,7 +43,7 @@ All Docker infrastructure files for the Knowledge Center AI Worker have been suc
    - Configurable via environment variables
 
 ### Configuration Files
-6. **F:\sources\repos\knowledgecenter\worker\.env.sample**
+6. **\.env.sample**
    - Template environment configuration
    - Redis settings
    - LLM server configuration
@@ -52,7 +52,7 @@ All Docker infrastructure files for the Knowledge Center AI Worker have been suc
    - Worker configuration
    - Database connection settings
 
-7. **F:\sources\repos\knowledgecenter\worker\.gitignore**
+7. **\.gitignore**
    - Ignores Python venv/
    - Ignores model files (*.gguf, *.safetensors)
    - Ignores __pycache__ and compiled Python
@@ -60,21 +60,21 @@ All Docker infrastructure files for the Knowledge Center AI Worker have been suc
    - Ignores IDE directories
 
 ### Model Storage Structure
-8. **F:\sources\repos\knowledgecenter\worker\models\.gitkeep**
-9. **F:\sources\repos\knowledgecenter\worker\models\gguf\.gitkeep**
-10. **F:\sources\repos\knowledgecenter\worker\models\hf\.gitkeep**
+8. **\models\.gitkeep**
+9. **\models\gguf\.gitkeep**
+10. **\models\hf\.gitkeep**
     - Placeholder files to ensure directories are tracked by git
     - Model files themselves are gitignored
 
 ### Documentation
-11. **F:\sources\repos\knowledgecenter\worker\README.md**
+11. **\README.md**
     - Comprehensive setup guide
     - Quick start instructions
     - Development workflow
     - Model management
     - Troubleshooting guide
 
-12. **F:\sources\repos\knowledgecenter\worker\DOCKER.md**
+12. **\DOCKER.md**
     - Detailed Docker infrastructure documentation
     - File structure overview
     - Docker Compose usage examples
@@ -87,8 +87,8 @@ All Docker infrastructure files for the Knowledge Center AI Worker have been suc
     - Production considerations
 
 ### Verification Scripts
-13. **F:\sources\repos\knowledgecenter\worker\verify_docker.sh** (Linux/Mac)
-14. **F:\sources\repos\knowledgecenter\worker\verify_docker.bat** (Windows)
+13. **\verify_docker.sh** (Linux/Mac)
+14. **\verify_docker.bat** (Windows)
     - Automated Docker setup verification
     - Checks prerequisites (Docker, Docker Compose)
     - Tests Redis service
@@ -100,7 +100,7 @@ All Docker infrastructure files for the Knowledge Center AI Worker have been suc
 ## Directory Structure
 
 ```
-F:\sources\repos\knowledgecenter\worker\
+\
 ├── docker-compose.yml              # Base: Redis only
 ├── docker-compose.llamacpp.yml     # Override: llama.cpp server
 ├── docker-compose.vllm.yml         # Override: vLLM server
@@ -261,10 +261,10 @@ For issues or questions:
 
 ## References
 
-- **Main Documentation**: F:\sources\repos\knowledgecenter\worker\README.md
-- **Docker Guide**: F:\sources\repos\knowledgecenter\worker\DOCKER.md
+- **Main Documentation**: \README.md
+- **Docker Guide**: \DOCKER.md
 - **Project Guide**: F:\sources\repos\knowledgecenter\CLAUDE.md
-- **Worker Guide**: F:\sources\repos\knowledgecenter\worker\CLAUDE.md
+- **Worker Guide**: \CLAUDE.md
 
 ---
 
