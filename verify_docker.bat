@@ -12,7 +12,7 @@ echo.
 REM Check if Docker is installed
 echo Checking prerequisites...
 docker --version >nul 2>&1
-if %errorlevel% neq 0 (
+if !errorlevel! neq 0 (
     echo [ERROR] Docker is not installed
     exit /b 1
 )
@@ -20,7 +20,7 @@ echo [OK] Docker is installed
 docker --version
 
 docker-compose --version >nul 2>&1
-if %errorlevel% neq 0 (
+if !errorlevel! neq 0 (
     echo [ERROR] Docker Compose is not installed
     exit /b 1
 )
@@ -48,12 +48,12 @@ docker-compose up -d redis
 timeout /t 5 /nobreak >nul
 
 docker-compose ps redis | findstr /C:"Up" >nul
-if %errorlevel% equ 0 (
+if !errorlevel! equ 0 (
     echo [OK] Redis container is running
 
     REM Test Redis connection
     docker-compose exec -T redis redis-cli ping | findstr /C:"PONG" >nul
-    if %errorlevel% equ 0 (
+    if !errorlevel! equ 0 (
         echo [OK] Redis is responding to ping
     ) else (
         echo [ERROR] Redis is not responding
@@ -69,7 +69,7 @@ echo Checking model directories...
 if exist models\gguf (
     echo [OK] models\gguf directory exists
     dir /b models\gguf\*.gguf >nul 2>&1
-    if %errorlevel% equ 0 (
+    if !errorlevel! equ 0 (
         echo   Found GGUF model(s)
     ) else (
         echo [WARNING] No GGUF models found in models\gguf\
@@ -82,7 +82,7 @@ if exist models\gguf (
 if exist models\hf (
     echo [OK] models\hf directory exists
     dir /b models\hf\ >nul 2>&1
-    if %errorlevel% equ 0 (
+    if !errorlevel! equ 0 (
         echo   Found HuggingFace model(s)
     ) else (
         echo [WARNING] No HuggingFace models found in models\hf\
@@ -97,7 +97,7 @@ echo.
 REM Check Docker images
 echo Checking Docker images...
 docker images | findstr /C:"redis" >nul
-if %errorlevel% equ 0 (
+if !errorlevel! equ 0 (
     echo [OK] Redis image exists
 ) else (
     echo [WARNING] Redis image not found locally (will be pulled on first run)
@@ -130,7 +130,7 @@ for %%f in (docker-compose.yml docker-compose.llamacpp.yml docker-compose.vllm.y
     if exist %%f (
         echo [OK] %%f exists
         docker-compose -f %%f config >nul 2>&1
-        if %errorlevel% equ 0 (
+        if !errorlevel! equ 0 (
             echo   YAML syntax is valid
         ) else (
             echo [ERROR] %%f has invalid YAML syntax
@@ -145,7 +145,7 @@ echo.
 REM Network check
 echo Checking Docker networks...
 docker network ls | findstr /C:"worker-network" >nul
-if %errorlevel% equ 0 (
+if !errorlevel! equ 0 (
     echo [OK] worker-network exists
 ) else (
     echo   worker-network will be created when services start
@@ -156,7 +156,7 @@ echo.
 REM Volume check
 echo Checking Docker volumes...
 docker volume ls | findstr /C:"worker_redis-data" >nul
-if %errorlevel% equ 0 (
+if !errorlevel! equ 0 (
     echo [OK] redis-data volume exists
 ) else (
     echo   redis-data volume will be created when Redis starts
@@ -167,10 +167,10 @@ echo.
 REM GPU check (optional)
 echo Checking GPU support (optional)...
 nvidia-smi >nul 2>&1
-if %errorlevel% equ 0 (
+if !errorlevel! equ 0 (
     echo [OK] nvidia-smi is available
     docker run --rm --gpus all nvidia/cuda:12.1.0-base-ubuntu22.04 nvidia-smi >nul 2>&1
-    if %errorlevel% equ 0 (
+    if !errorlevel! equ 0 (
         echo [OK] Docker can access NVIDIA GPUs
     ) else (
         echo [WARNING] Docker cannot access GPUs (nvidia-docker2 may not be installed)
